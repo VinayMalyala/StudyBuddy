@@ -18,12 +18,18 @@ class Room(models.Model):
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
+    # Logic to add the newest room to the top
+    class Meta:
+        ordering = ['-updated', '-created'] # '-' ensures it is in descending order
+
     def __str__(self):
         return self.name
     
 class Message(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    #<> room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='messages') 
+    #<>  Now this can be called by its parent(Room) -- room.messages.all()
     body = models.TextField()
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
