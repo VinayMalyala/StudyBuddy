@@ -1,10 +1,23 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q
+from django.contrib.auth.models import User
 
 from .models import Room, Topic
 from .forms import RoomForm
 
 # Create your views here.
+
+def login_view(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        try:
+            user = User.objects.get(username=username)
+        except:
+            pass
+    context = {}
+    return render(request, 'main/login_register.html', context)
 
 def home_view(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
