@@ -95,14 +95,12 @@ def profile_view(request, pk):
 @login_required(login_url='login')
 def create_room_view(request):
     if request.method == "POST":
-        try:
-            room_form = RoomForm(request.POST)
-            if room_form.is_valid():
-                room_form.save()
-                return redirect('home')
-
-        except Exception as e:
-            pass
+        room_form = RoomForm(request.POST)
+        if room_form.is_valid():
+            room = room_form.save(commit=False)
+            room.host = request.user
+            room.save()
+            return redirect('home')
 
     elif request.method == "GET":
         room_form = RoomForm()
