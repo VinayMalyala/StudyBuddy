@@ -83,6 +83,15 @@ def room_view(request, pk):
     context = {'room': room, 'room_messages': room_messages, 'participants': participants}
     return render(request, 'main/room.html', context)
 
+def profile_view(request, pk):
+    user = User.objects.get(id=pk)
+    rooms = user.room_set.all()
+    room_messages = user.message_set.all()
+    topics = Topic.objects.all()
+
+    context = {'user': user, 'rooms': rooms, 'room_messages': room_messages, 'topics': topics}
+    return render(request, 'main/profile.html', context)
+
 @login_required(login_url='login')
 def create_room_view(request):
     if request.method == "POST":
@@ -109,13 +118,11 @@ def update_room_view(request, pk):
         return HttpResponse("You are not allowed here!")
 
     if request.method == "POST":
-        try:
-            room_form = RoomForm(request.POST, instance=room)
-            if room_form.is_valid():
-                room_form.save()
-                return redirect('home')
-        except Exception as e:
-            pass
+        room_form = RoomForm(request.POST, instance=room)
+        if room_form.is_valid():
+            room_form.save()
+            return redirect('home')
+        
 
     context = {'room_form': room_form}
     return render(request, "main/room_form.html", context)
