@@ -12,6 +12,9 @@ urlpatterns = [
     path('profile/<str:pk>/', views.profile_view, name='profile'),
     path('update-user/', views.update_user_view, name='update-user'),
 
+    path('topics/', views.topics_view, name='topics'),
+    path('activity/', views.activity_view, name='activity'),
+
     path('create-room/', views.create_room_view, name="create-room"),
     path('update-room/<str:pk>', views.update_room_view, name="update-room"),
     path('delete-room/<str:pk>', views.delete_room_view, name="delete-room"),

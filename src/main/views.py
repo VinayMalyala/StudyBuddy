@@ -60,7 +60,7 @@ def home_view(request):
         Q(name__icontains=q) |
         Q(description__icontains=q)
      ) # query upward to parent
-    topics = Topic.objects.all()
+    topics = Topic.objects.all()[0:5]
     room_count = rooms.count()
     room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))
 
@@ -171,3 +171,12 @@ def update_user_view(request):
             user_form.save()
             return redirect('profile', pk=user.id)
     return render(request, 'main/update-user.html', {'user_form': user_form})
+
+def topics_view(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    topics = Topic.objects.filter(name__icontains=q)
+    return render(request, 'main/topics.html', {'topics': topics})
+
+def activity_view(request):
+    room_messages = Message.objects.all()
+    return render(request, 'main/activity.html', {'room_messages': room_messages})
