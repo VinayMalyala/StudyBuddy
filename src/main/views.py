@@ -8,7 +8,7 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 
 from .models import Room, Topic, Message
-from .forms import RoomForm
+from .forms import RoomForm, UserForm
 
 # Create your views here.
 
@@ -160,3 +160,14 @@ def delete_message_view(request, pk):
         return redirect('room', pk=room.id)
     return render(request, 'main/delete.html', {'obj': message})
 
+@login_required(login_url='login')
+def update_user_view(request):
+    user = request.user
+    user_form = UserForm(instance=user)
+
+    if request.method == "POST":
+        user_form = UserForm(request.POST, instance=user)
+        if user_form.is_valid():
+            user_form.save()
+            return redirect('profile', pk=user.id)
+    return render(request, 'main/update-user.html', {'user_form': user_form})
