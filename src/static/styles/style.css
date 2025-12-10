@@ -56,6 +56,14 @@ img {
   width: 100%;
 }
 
+/* Specific avatar preview used by the admin/user update form */
+.avatar-preview {
+  width: 80px !important;
+  height: auto !important;
+  max-width: none !important;
+  display: inline-block;
+}
+
 a {
   display: inline-block;
   color: var(--color-main);
@@ -423,22 +431,30 @@ a {
 
 .layout__box {
   width: 90%;
-  max-width: 48rem;
+  max-width: 56rem;
   min-height: 40rem;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -46%);
+  position: relative; /* keep in flow so page scroll works */
+  margin: 3.5rem auto; /* space under navbar and center */
   background-color: var(--color-dark);
   border-radius: 1rem;
   box-shadow: 1px 1px 6px 3px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  overflow: visible;
+}
+
+@media screen and (max-width: 600px) {
+  .layout__box {
+    margin: 2.5rem auto; /* reduce top space on small screens */
+    width: 95%;
+    max-width: 40rem;
+  }
 }
 
 .layout__boxHeader {
   display: flex;
   padding: 1.5rem;
   background-color: var(--color-dark-light);
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
 }
 
 .layout__boxTitle {
@@ -802,6 +818,13 @@ a {
 
 .update-account.layout .layout__box {
   max-width: 68rem;
+  /* Don't absolutely position the box here — keep it in the document flow so
+     the page can grow and the browser scrollbar handles overflow. */
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  margin: 4rem auto; /* space below navbar and centered horizontally */
 }
 
 /*==============================
@@ -826,6 +849,8 @@ a {
 .auth .layout__boxHeader {
   text-align: center;
   justify-content: center;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
 }
 
 .auth__action {
