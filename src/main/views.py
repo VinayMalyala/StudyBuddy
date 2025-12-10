@@ -3,12 +3,10 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Q
-from django.contrib.auth.models import User
 
-from .models import Room, Topic, Message
-from .forms import RoomForm, UserForm
+from .models import User, Room, Topic, Message
+from .forms import UserForm, MyUserCreationForm, RoomForm
 
 # Create your views here.
 
@@ -17,14 +15,14 @@ def login_view(request):
     if request.user.is_authenticated:
         return redirect('home')
     if request.method == "POST":
-        username = request.POST.get('username').lower()
+        email = request.POST.get('email').lower()
         password = request.POST.get('password')
 
         try:
-            user = User.objects.get(username=username)
+            user = User.objects.get(email=email)
         except:
             messages.error(request, 'User does not exist!')
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
             # messages.success(request, f'You are logged in as {user.username}')
@@ -40,7 +38,7 @@ def logout_view(request):
 
 def register_view(request):
     if request.method == 'POST':
-        register_form = UserCreationForm(request.POST)
+        register_form = MyUserCreationForm(request.POST)
         if register_form.is_valid():
             user = register_form.save(commit=False)
             user.username = user.username.lower()
@@ -50,7 +48,7 @@ def register_view(request):
         else:
             messages.error(request, 'An Unknown error occured!')
     else:
-        register_form = UserCreationForm()
+        register_form = MyUserCreationForm()
     return render(request, 'main/login_register.html', {'register_form': register_form})
 
 def home_view(request):
@@ -166,7 +164,7 @@ def update_user_view(request):
     user_form = UserForm(instance=user)
 
     if request.method == "POST":
-        user_form = UserForm(request.POST, instance=user)
+        user_form = UserForm(request.POST, request.FILES, instance=user)
         if user_form.is_valid():
             user_form.save()
             return redirect('profile', pk=user.id)
