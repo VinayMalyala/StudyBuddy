@@ -20,15 +20,15 @@ def login_view(request):
 
         try:
             user = User.objects.get(email=email)
+            user = authenticate(request, email=email, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, f'You are logged in as {user.username}')
+                return redirect('home')
+            else:
+                messages.error(request, 'Username or Password does not exist!')
         except:
             messages.error(request, 'User does not exist!')
-        user = authenticate(request, email=email, password=password)
-        if user is not None:
-            login(request, user)
-            # messages.success(request, f'You are logged in as {user.username}')
-            return redirect('home')
-        else:
-            messages.error(request, 'Username or Password does not exist!')
     context = {'page': page}
     return render(request, 'main/login_register.html', context)
 
@@ -44,9 +44,10 @@ def register_view(request):
             user.username = user.username.lower()
             user.save()
             login(request, user)
+            messages.success(request, f'User {user.username} is registered successfully.')
             return redirect('home')
         else:
-            messages.error(request, 'An Unknown error occured!')
+            messages.error(request, 'An Unknown error occured. Try again later!')
     else:
         register_form = MyUserCreationForm()
     return render(request, 'main/login_register.html', {'register_form': register_form})
@@ -105,7 +106,7 @@ def create_room_view(request):
             name = request.POST.get('name'),
             description = request.POST.get('description'),
         )
-        
+        messages.success(request, "Room created sucessfully!")
         return redirect('home')
    
     context = {'room_form': room_form, 'topics': topics}
@@ -118,7 +119,8 @@ def update_room_view(request, pk):
     topics = Topic.objects.all()
 
     if request.user != room.host:
-        return HttpResponse("You are not allowed here!")
+        messages.error(request, "You are not allowed here!")
+        return redirect('home')
 
     if request.method == "POST":
         topic_name = request.POST.get('topic')
@@ -127,6 +129,7 @@ def update_room_view(request, pk):
         room.topic = topic
         room.description = request.POST.get('description')
         room.save()
+        messages.success(request, "Room updated sucessfully!")
         return redirect('home')
         
 
@@ -138,10 +141,12 @@ def delete_room_view(request, pk):
     room = Room.objects.get(id=pk)
 
     if request.user != room.host:
-        return HttpResponse("You are not allowed here!")
+        messages.error(request, "You are not allowed to this!")
+        return redirect('home')
     
     if request.method == "POST":
         room.delete()
+        messages.success(request, f"Room {room} deleted sucessfully!")
         return redirect('home')
     return render(request, 'main/delete.html', {'obj': room})
 
@@ -151,23 +156,45 @@ def delete_message_view(request, pk):
     room = message.room
 
     if request.user != message.user:
-        return HttpResponse("You are not allowed here!")
+        messages.error(request, "You are not allowed to this!")
+        return redirect('home')
     
     if request.method == "POST":
         message.delete()
+        messages.success(request, f"Message deleted sucessfully!")
         return redirect('room', pk=room.id)
     return render(request, 'main/delete.html', {'obj': message})
 
 @login_required(login_url='login')
-def update_user_view(request):
-    user = request.user
-    user_form = UserForm(instance=user)
+def update_user_view(request, pk=None):
+    """
+    Edit a user's profile. If `pk` is provided, ensure only the owner can edit their profile
+    (same guard as update_room_view). If no `pk` provided, the logged-in user edits their own profile.
+    """
+    # Determine target user: either the requested pk or the logged-in user
+    if pk:
+        try:
+            target_user = User.objects.get(id=pk)
+        except User.DoesNotExist:
+            messages.error(request, 'User does not exist!')
+            return redirect('home')
+
+        # Block non-owners from editing another user's profile
+        if request.user != target_user:
+            messages.error(request, "You are not allowed here!")
+            return redirect('home')
+    else:
+        target_user = request.user
+
+    user_form = UserForm(instance=target_user)
 
     if request.method == "POST":
-        user_form = UserForm(request.POST, request.FILES, instance=user)
+        user_form = UserForm(request.POST, request.FILES, instance=target_user)
         if user_form.is_valid():
             user_form.save()
-            return redirect('profile', pk=user.id)
+            messages.success(request, f"Profile updated sucessfully!")
+            return redirect('profile', pk=target_user.id)
+
     return render(request, 'main/update-user.html', {'user_form': user_form})
 
 def topics_view(request):
