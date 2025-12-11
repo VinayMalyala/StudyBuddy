@@ -1,5 +1,8 @@
 # 🧠 StudyBuddy  
 A full-stack **Django-based discussion platform** inspired by Discord, designed for learning communities to collaborate, create rooms, and engage in topic-focused conversations.
+<br>
+<br>
+**Visit:** https://vinaymalyala-study-buddy.onrender.com/
 
 ---
 
@@ -136,3 +139,5 @@ Vinay Malyala <br> <br>
 ## ⭐ Support
 
 If you find this project useful, please ⭐ the repository to show your support!
+
+<br>
