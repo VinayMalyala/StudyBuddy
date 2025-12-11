@@ -55,7 +55,17 @@ All application data—including users, messages, and room metadata—is stored 
 ---
 
 ## 📸 Screenshots  
-> Add screenshots of your UI here  
+- **HomePage:**
+  
+  <img width="1872" height="957" alt="Image" src="https://github.com/user-attachments/assets/b33d2f5b-3786-49a1-ba4a-1ce77c388a24" />
+
+- **RoomPage:**
+  
+  <img width="1872" height="951" alt="Image" src="https://github.com/user-attachments/assets/a3e55fd9-c107-4d19-9253-f18b8cb9a480" />
+
+- **ProfilePage:**
+  
+  <img width="1865" height="948" alt="Image" src="https://github.com/user-attachments/assets/02e2433a-4961-4d3d-b9ff-44135e655c20" />
 
 
 ---
