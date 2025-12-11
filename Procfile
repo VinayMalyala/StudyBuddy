@@ -1,1 +1,1 @@
-web: gunicorn studybuddy.wsgi:application --child src --bind 0.0.0.0:$PORTpi
+web: gunicorn studybuddy.wsgi:application --child src --bind 0.0.0.0:$PORT
