@@ -33,21 +33,21 @@ All application data—including users, messages, and room metadata—is stored 
 ## ✨ Key Features
 
 ### 🔐 User Authentication
-- Register, login, logout  
-- Create and manage user profiles  
+- &nbsp;&nbsp; Register, login, logout  
+- &nbsp;&nbsp; Create and manage user profiles  
 
 ### 💬 Rooms & Conversations
-- Create, update, delete rooms  
-- Participate in message threads  
-- Room hosts can control their space  
+- &nbsp;&nbsp; Create, update, delete rooms  
+- &nbsp;&nbsp; Participate in message threads  
+- &nbsp;&nbsp; Room hosts can control their space  
 
 ### 🔎 Smart Search
-- Search rooms by topic or room name  
-- Explore discussions efficiently  
+- &nbsp;&nbsp; Search rooms by topic or room name  
+- &nbsp;&nbsp; Explore discussions efficiently  
 
 ### 📁 Database Integration
-- SQLite for room, user, and message persistence  
-- Django ORM for secure and optimized database operations  
+- &nbsp;&nbsp; SQLite for room, user, and message persistence  
+- &nbsp;&nbsp; Django ORM for secure and optimized database operations  
 
 ---
 
@@ -59,29 +59,29 @@ All application data—including users, messages, and room metadata—is stored 
 
 ## 🚀 Getting Started
 
-### 1. Clone the Repository
+### &nbsp;&nbsp; 1. Clone the Repository
 ```bash
 git clone https://github.com/VinayMalyala/StudyBuddy.git
 cd StudyBuddy
 ```
 
-### 2. Create Virtual Environment
+### &nbsp;&nbsp; 2. Create Virtual Environment
 ```bash
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 ```
 
-### 3. Install Dependencies
+### &nbsp;&nbsp; 3. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Run Migrations
+### &nbsp;&nbsp; 4. Run Migrations
 ```bash
 python manage.py migrate
 ```
 
-### 5. Start the Development Server
+### &nbsp;&nbsp; 5. Start the Development Server
 ```bash
 python manage.py runserver
 ```
@@ -128,8 +128,8 @@ This project is licensed under the **[MIT License](./LICENSE)**.
 
 ## 👨‍💻 Author
 
-Vinay Malyala
-GitHub: VinayMalyala
+Vinay Malyala <br> <br>
+[![GitHub – VinayMalyala](https://img.shields.io/badge/GitHub-VinayMalyala-black?logo=github)](https://github.com/VinayMalyala)
 
 ---
 
